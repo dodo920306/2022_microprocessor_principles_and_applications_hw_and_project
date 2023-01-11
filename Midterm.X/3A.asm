@@ -1,0 +1,111 @@
+List p=18f4520
+    #include<p18f4520.inc>
+    CONFIG OSC = INTIO67
+    CONFIG WDT = OFF
+    org 0x00
+
+Initial:
+    MOVLW 0x79
+    MOVWF 0x10
+    MOVLW 0x99
+    MOVWF 0x11  
+    MOVLW 0x10
+    MOVWF 0x20
+    MOVLW 0x99
+    MOVWF 0x21
+    
+    MOVF 0x11, W
+    ANDLW 0x0F
+    MOVWF 0x13
+    MOVF 0x11, W
+    ANDLW 0xF0
+    MOVWF 0x12
+    MOVF 0x10, W
+    ANDLW 0x0F
+    MOVWF 0x11
+    MOVF 0x10, W
+    ANDLW 0xF0
+    MOVWF 0x10
+    MOVF 0x21, W
+    ANDLW 0x0F
+    MOVWF 0x23
+    MOVF 0x21, W
+    ANDLW 0xF0
+    MOVWF 0x22
+    MOVF 0x20, W
+    ANDLW 0x0F
+    MOVWF 0x21
+    MOVF 0x20, W
+    ANDLW 0xF0
+    MOVWF 0x20
+    RRNCF 0x12
+    RRNCF 0x12
+    RRNCF 0x12
+    RRNCF 0x12
+    RRNCF 0x10
+    RRNCF 0x10
+    RRNCF 0x10
+    RRNCF 0x10
+    RRNCF 0x22
+    RRNCF 0x22
+    RRNCF 0x22
+    RRNCF 0x22
+    RRNCF 0x20
+    RRNCF 0x20
+    RRNCF 0x20
+    RRNCF 0x20
+    
+    
+    MOVF 0x13, W
+    ADDWF 0x23, W
+    MOVWF 0x03
+    MOVF 0x12, W
+    ADDWF 0x22, W
+    MOVWF 0x02
+    MOVF 0x11, W
+    ADDWF 0x21, W
+    MOVWF 0x01
+    MOVF 0x10, W
+    ADDWF 0x20, W
+    MOVWF 0x00
+    
+    MOVLW 0x0A
+    MOVWF 0x05
+    MOVF 0x03, W
+    CPFSLT 0x05
+	GOTO NEXT1
+    CPFSEQ 0x05
+	GOTO NEXT2
+    INCF 0x02
+    SUBWF 0x05, W
+    NEGF WREG
+    MOVWF 0x03
+NEXT1:
+    MOVF 0x02, W
+    CPFSLT 0x05
+	GOTO NEXT2
+    CPFSEQ 0x05
+	GOTO NEXT2
+    INCF 0x01
+    SUBWF 0x05, W
+    NEGF WREG
+    MOVWF 0x02
+NEXT2:
+    MOVF 0x01, W
+    CPFSLT 0x05
+	GOTO NEXT3
+    CPFSEQ 0x05
+	GOTO NEXT2
+    INCF 0x00
+    SUBWF 0x05, W
+    NEGF WREG
+    MOVWF 0x01
+NEXT3:
+    MOVF 0x01, W
+    ADDWF 0x00, F
+    MOVF 0x03, W
+    ADDWF 0x02, F
+    MOVF 0x02, W
+    MOVWF 0x01
+    
+end

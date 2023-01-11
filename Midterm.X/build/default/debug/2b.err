@@ -1,0 +1,4 @@
+Warning[205] C:\USERS\DODO9\MPLABXPROJECTS\MIDTERM.X\2B.ASM 1 : Found directive in column 1. (List)
+Warning[205] C:\USERS\DODO9\MPLABXPROJECTS\MIDTERM.X\2B.ASM 23 : Found directive in column 1. (endm)
+Warning[203] C:\USERS\DODO9\MPLABXPROJECTS\MIDTERM.X\2B.ASM 25 : Found opcode in column 1. (GOTO)
+Warning[205] C:\USERS\DODO9\MPLABXPROJECTS\MIDTERM.X\2B.ASM 59 : Found directive in column 1. (end)

@@ -1,0 +1,3 @@
+Warning[203] C:\USERS\DODO9\MPLABXPROJECTS\LAB07.X\ADVANCE.ASM 60 : Found opcode in column 1. (goto)
+Warning[202] C:\USERS\DODO9\MPLABXPROJECTS\LAB07.X\ADVANCE.ASM 92 : Argument out of range.  Least significant bits used.
+Warning[205] C:\USERS\DODO9\MPLABXPROJECTS\LAB07.X\ADVANCE.ASM 102 : Found directive in column 1. (end)

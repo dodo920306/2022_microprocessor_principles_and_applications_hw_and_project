@@ -1,0 +1,62 @@
+#INCLUDE <p18f4520.inc>
+    CONFIG OSC = INTIO67
+    CONFIG WDT = OFF 
+    org 0x00
+
+Inital:
+    CLRF 0x10
+    CLRF 0x11
+    CLRF 0x12
+    CLRF 0x13
+    CLRF 0x14
+    CLRF 0x15
+    CLRF 0x16
+    CLRF 0x17
+    CLRF 0x18
+    CLRF 0x00
+    CLRF 0x01
+    MOVLW 0x0B
+    MOVWF 0x10
+    MOVLW 0x05
+    MOVWF 0x11
+    MOVLW 0x40
+    MOVWF 0x12
+    MOVLW 0x07
+    MOVWF 0x13
+    MOVLW 0x0D
+    MOVWF 0x14
+    MOVLW 0x7F
+    MOVWF 0x15
+    MOVLW 0x0A
+    MOVWF 0x16
+    MOVLW 0x01
+    MOVWF 0x17
+    MOVLW 0xFE
+    MOVWF 0x18
+    MOVLW 0x09
+    MOVWF 0x00
+    MOVLW 0xFF
+    MOVWF 0x01
+    LFSR 0, 0x010
+    LFSR 1, 0x100
+Start:
+    MOVF POSTINC0, 0
+    INCF PLUSW1
+    DECFSZ 0x00
+    GOTO Start
+    LFSR 0, 0x010
+    MOVLW 0x09
+    MOVWF 0x00
+Check:
+    INCF 0x01
+    MOVF 0x01, 0
+    DECFSZ PLUSW1
+	GOTO Check
+    GOTO Write
+Write:
+    MOVF 0x01, 0
+    MOVWF POSTINC0
+    DECFSZ 0x00
+    GOTO Check
+end
+

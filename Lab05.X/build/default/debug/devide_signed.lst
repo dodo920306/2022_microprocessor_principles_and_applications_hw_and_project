@@ -1,0 +1,135 @@
+
+
+Microchip MPLAB XC8 Assembler V2.40 build 20220703182018 
+                                                                                                           Thu Oct 20 15:44:38 2022
+
+
+     1                           	processor	18F4520
+     2                           	pagewidth 132
+     3                           	opt	flic
+     4                           	psect	udata_acs,global,class=COMRAM,space=1,delta=1,lowdata,noexec
+     5                           	psect	udata_bank0,global,class=BANK0,space=1,delta=1,lowdata,noexec
+     6                           	psect	udata_bank1,global,class=BANK1,space=1,delta=1,lowdata,noexec
+     7                           	psect	udata_bank2,global,class=BANK2,space=1,delta=1,lowdata,noexec
+     8                           	psect	udata_bank3,global,class=BANK3,space=1,delta=1,lowdata,noexec
+     9                           	psect	udata_bank4,global,class=BANK4,space=1,delta=1,lowdata,noexec
+    10                           	psect	udata_bank5,global,class=BANK5,space=1,delta=1,lowdata,noexec
+    11                           	psect	udata,global,class=RAM,space=1,delta=1,noexec
+    12                           	psect	code,global,reloc=2,class=CODE,delta=1
+    13                           	psect	data,global,reloc=2,class=CONST,delta=1,noexec
+    14                           	psect	edata,global,class=EEDATA,space=3,delta=2,noexec
+    15                           	psect	mytext,local,reloc=2,class=CODE,delta=1
+    16   000000                     
+    17                           	psect	edata
+    18   000000                     stk_offset	set	0
+    19   000000                     auto_size	set	0
+    20                           
+    21                           ; stack_auto defines a symbol /name/_offset which equates to the
+    22                           ; stack offset of the auto object in question
+    23   000000                     
+    24                           ; stack_param defines a symbol /name/_offset which equates to the
+    25                           ; stack offset of the parameter object in question
+    26   000000                     
+    27                           ; alloc_stack adjusts the SP to allocate space for auto objects
+    28                           ; it also links in to the btemp symbol so that can be used
+    29   000000                     
+    30                           ; restore_stack adjusts the SP to remove all auto and parameter
+    31                           ; objects from the stack prior to returning from a function
+    32   000000                     
+    33                           	psect	mytext
+    34   007F9E                     _divide_signed:
+    35                           	callstack 0
+    36   007F9E  6E00               	movwf	0,c
+    37   007FA0  6AE8               	clrf	wreg,c
+    38   007FA2  5200               	movf	0,f,c
+    39   007FA4  E703               	bnn	14
+    40   007FA6  6C00               	negf	0,c
+    41   007FA8  2AE8               	incf	wreg,f,c
+    42   007FAA  6E02               	movwf	2,c
+    43   007FAC  5201               	movf	1,f,c
+    44   007FAE  E702               	bnn	22
+    45   007FB0  6C01               	negf	1,c
+    46   007FB2  06E8               	decf	wreg,f,c
+    47   007FB4  52E8               	movf	wreg,f,c
+    48   007FB6  E002               	bz	30
+    49   007FB8  0E01               	movlw	1
+    50   007FBA  6E03               	movwf	3,c
+    51   007FBC  6AE8               	clrf	wreg,c
+    52   007FBE                     LOOP:
+    53   007FBE  2401               	addwf	1,w,c
+    54   007FC0  2A10               	incf	16,f,c
+    55   007FC2  6000               	cpfslt	0,c
+    56   007FC4  D7FC               	goto	LOOP
+    57   007FC6  5C01               	subwf	1,w,c
+    58   007FC8  6CE8               	negf	wreg,c
+    59   007FCA  0610               	decf	16,f,c
+    60   007FCC  5C00               	subwf	0,w,c
+    61   007FCE  6E11               	movwf	17,c
+    62   007FD0  5203               	movf	3,f,c
+    63   007FD2  E001               	bz	56
+    64   007FD4  6C10               	negf	16,c
+    65   007FD6  5202               	movf	2,f,c
+    66   007FD8  E001               	bz	62
+    67   007FDA  6C11               	negf	17,c
+    68   007FDC  5011               	movf	17,w,c
+    69   007FDE  0B0F               	andlw	15
+    70   007FE0  6E01               	movwf	1,c
+    71   007FE2  5010               	movf	16,w,c
+    72   007FE4  0B0F               	andlw	15
+    73   007FE6  46E8               	rlncf	wreg,f,c
+    74   007FE8  46E8               	rlncf	wreg,f,c
+    75   007FEA  46E8               	rlncf	wreg,f,c
+    76   007FEC  46E8               	rlncf	wreg,f,c
+    77   007FEE  2601               	addwf	1,f,c
+    78   007FF0  5010               	movf	16,w,c
+    79   007FF2  0BF0               	andlw	240
+    80   007FF4  46E8               	rlncf	wreg,f,c
+    81   007FF6  46E8               	rlncf	wreg,f,c
+    82   007FF8  46E8               	rlncf	wreg,f,c
+    83   007FFA  46E8               	rlncf	wreg,f,c
+    84   007FFC  6E02               	movwf	2,c
+    85   007FFE  0012               	return	
+    86                           tosu	equ	0xFFF
+    87                           tosh	equ	0xFFE
+    88                           tosl	equ	0xFFD
+    89                           stkptr	equ	0xFFC
+    90                           pclatu	equ	0xFFB
+    91                           pclath	equ	0xFFA
+    92                           pcl	equ	0xFF9
+    93                           tblptru	equ	0xFF8
+    94                           tblptrh	equ	0xFF7
+    95                           tblptrl	equ	0xFF6
+    96                           tablat	equ	0xFF5
+    97                           prodh	equ	0xFF4
+    98                           prodl	equ	0xFF3
+    99                           indf0	equ	0xFEF
+   100                           postinc0	equ	0xFEE
+   101                           postdec0	equ	0xFED
+   102                           preinc0	equ	0xFEC
+   103                           plusw0	equ	0xFEB
+   104                           fsr0h	equ	0xFEA
+   105                           fsr0l	equ	0xFE9
+   106                           wreg	equ	0xFE8
+   107                           indf1	equ	0xFE7
+   108                           postinc1	equ	0xFE6
+   109                           postdec1	equ	0xFE5
+   110                           preinc1	equ	0xFE4
+   111                           plusw1	equ	0xFE3
+   112                           fsr1h	equ	0xFE2
+   113                           fsr1l	equ	0xFE1
+   114                           bsr	equ	0xFE0
+   115                           indf2	equ	0xFDF
+   116                           postinc2	equ	0xFDE
+   117                           postdec2	equ	0xFDD
+   118                           preinc2	equ	0xFDC
+   119                           plusw2	equ	0xFDB
+   120                           fsr2h	equ	0xFDA
+   121                           fsr2l	equ	0xFD9
+   122                           status	equ	0xFD8
+
+
+Microchip Technology PIC18 Macro Assembler V2.40 build 20220703182018 
+Symbol Table                                                                                               Thu Oct 20 15:44:38 2022
+
+                        LOOP 7FBE                          WREG 000FE8                       isa$std 000001  
+                   isa$xinst 000000                _divide_signed 7F9E  

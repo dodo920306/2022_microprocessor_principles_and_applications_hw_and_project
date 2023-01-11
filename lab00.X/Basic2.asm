@@ -1,0 +1,40 @@
+LIST p=18f4520
+    #include<p18f4520.inc>
+	CONFIG OSC = INTIO67
+	CONFIG WDT = OFF
+	org 0x00
+
+;*****************
+;??????COMF?INCF?????[0x000]????????
+;????????????????[0x001]?????????
+;??data memory ?? [0x002] ????0xFF?????
+;0x01?
+;*****************
+
+Initial:
+    CLRF 0x00
+    CLRF 0x01
+    CLRF 0x02
+Input:
+    MOVLW 0xFC
+    MOVWF 0x00
+    MOVLW 0x04
+    MOVWF 0x01
+Check:
+    COMF 0x00
+    INCF 0x00
+    MOVF 0x00, 0
+    CPFSEQ 0x01
+	GOTO Wrong
+    GOTO Right
+Right:
+    MOVLW 0xFF
+    GOTO Result
+Wrong:
+    MOVLW 0x01
+Result:
+    MOVWF 0x02
+end  
+    
+
+

@@ -1,0 +1,114 @@
+
+
+Microchip MPLAB XC8 Assembler V2.40 build 20220703182018 
+                                                                                                           Wed Oct 19 21:21:18 2022
+
+
+     1                           	processor	18F4520
+     2                           	pagewidth 132
+     3                           	opt	flic
+     4                           	psect	udata_acs,global,class=COMRAM,space=1,delta=1,lowdata,noexec
+     5                           	psect	udata_bank0,global,class=BANK0,space=1,delta=1,lowdata,noexec
+     6                           	psect	udata_bank1,global,class=BANK1,space=1,delta=1,lowdata,noexec
+     7                           	psect	udata_bank2,global,class=BANK2,space=1,delta=1,lowdata,noexec
+     8                           	psect	udata_bank3,global,class=BANK3,space=1,delta=1,lowdata,noexec
+     9                           	psect	udata_bank4,global,class=BANK4,space=1,delta=1,lowdata,noexec
+    10                           	psect	udata_bank5,global,class=BANK5,space=1,delta=1,lowdata,noexec
+    11                           	psect	udata,global,class=RAM,space=1,delta=1,noexec
+    12                           	psect	code,global,reloc=2,class=CODE,delta=1
+    13                           	psect	data,global,reloc=2,class=CONST,delta=1,noexec
+    14                           	psect	edata,global,class=EEDATA,space=3,delta=2,noexec
+    15                           	psect	mytext,local,reloc=2,class=CODE,delta=1
+    16  0000                     
+    17                           	psect	edata
+    18  0000                     stk_offset	set	0
+    19  0000                     auto_size	set	0
+    20                           
+    21                           ; stack_auto defines a symbol /name/_offset which equates to the
+    22                           ; stack offset of the auto object in question
+    23  0000'                    
+    24                           ; stack_param defines a symbol /name/_offset which equates to the
+    25                           ; stack offset of the parameter object in question
+    26  0000'                    
+    27                           ; alloc_stack adjusts the SP to allocate space for auto objects
+    28                           ; it also links in to the btemp symbol so that can be used
+    29  0000'                    
+    30                           ; restore_stack adjusts the SP to remove all auto and parameter
+    31                           ; objects from the stack prior to returning from a function
+    32  0000'                    
+    33                           	psect	mytext
+    34  0000'                    _isprime:
+    35                           	callstack 0
+    36  0000' 0E02               	movlw	2
+    37  0002' 6E02               	movwf	2,c
+    38  0004' D806               	rcall	LOOP
+    39  0006' 0E01               	movlw	1
+    40  0008' 6000               	cpfslt	0,c
+    41  000A' 0012               	return	
+    42  000C' 0EFF               	movlw	255
+    43  000E' 6E00               	movwf	0,c
+    44  0010' 0012               	return	
+    45  0012'                    LOOP:
+    46  0012' D809               	rcall	MUL
+    47  0014' 0E01               	movlw	1
+    48  0016' 6000               	cpfslt	0,c
+    49  0018' 0012               	return	
+    50  001A' 2A02               	incf	2,f,c
+    51  001C' 02E8               	mulwf	wreg,c
+    52  001E' 50F3               	movf	prodl,w,c
+    53  0020' 5E01               	subwf	1,f,c
+    54  0022' E6EF               	bmi	1
+    55  0024' 0012               	return	
+    56  0026'                    MUL:
+    57  0026' 6001               	cpfslt	1,c
+    58  0028' D7FE               	goto	MUL
+    59  002A' 6201               	cpfseq	1,c
+    60  002C' 0012               	return	
+    61  002E' 0E01               	movlw	1
+    62  0030' 6E00               	movwf	0,c
+    63  0032' 0012               	return	
+    64                           tosu	equ	0xFFF
+    65                           tosh	equ	0xFFE
+    66                           tosl	equ	0xFFD
+    67                           stkptr	equ	0xFFC
+    68                           pclatu	equ	0xFFB
+    69                           pclath	equ	0xFFA
+    70                           pcl	equ	0xFF9
+    71                           tblptru	equ	0xFF8
+    72                           tblptrh	equ	0xFF7
+    73                           tblptrl	equ	0xFF6
+    74                           tablat	equ	0xFF5
+    75                           prodh	equ	0xFF4
+    76                           prodl	equ	0xFF3
+    77                           indf0	equ	0xFEF
+    78                           postinc0	equ	0xFEE
+    79                           postdec0	equ	0xFED
+    80                           preinc0	equ	0xFEC
+    81                           plusw0	equ	0xFEB
+    82                           fsr0h	equ	0xFEA
+    83                           fsr0l	equ	0xFE9
+    84                           wreg	equ	0xFE8
+    85                           indf1	equ	0xFE7
+    86                           postinc1	equ	0xFE6
+    87                           postdec1	equ	0xFE5
+    88                           preinc1	equ	0xFE4
+    89                           plusw1	equ	0xFE3
+    90                           fsr1h	equ	0xFE2
+    91                           fsr1l	equ	0xFE1
+    92                           bsr	equ	0xFE0
+    93                           indf2	equ	0xFDF
+    94                           postinc2	equ	0xFDE
+    95                           postdec2	equ	0xFDD
+    96                           preinc2	equ	0xFDC
+    97                           plusw2	equ	0xFDB
+    98                           fsr2h	equ	0xFDA
+    99                           fsr2l	equ	0xFD9
+   100                           status	equ	0xFD8
+
+
+Microchip Technology PIC18 Macro Assembler V2.40 build 20220703182018 
+Symbol Table                                                                                               Wed Oct 19 21:21:18 2022
+
+                         MUL 000026                          LOOP 000012                          WREG 000FE8  
+                       PRODL 000FF3                       isa$std 000001                      _isprime 000000  
+                   isa$xinst 000000  

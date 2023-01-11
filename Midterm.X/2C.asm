@@ -1,0 +1,67 @@
+List p=18f4520
+    #include<p18f4520.inc>
+    CONFIG OSC = INTIO67
+    CONFIG WDT = OFF
+    org 0x00
+    
+LIST_INT macro n1, n2, n3, n4, n5, n6, n7
+    LFSR 0, 0x400
+    MOVLW n1
+    MOVWF POSTINC0
+    MOVLW n2
+    MOVWF POSTINC0
+    MOVLW n3
+    MOVWF POSTINC0
+    MOVLW n4
+    MOVWF POSTINC0
+    MOVLW n5
+    MOVWF POSTINC0
+    MOVLW n6
+    MOVWF POSTINC0
+    MOVLW n7
+    MOVWF POSTINC0
+endm
+    
+GOTO Initial
+    
+TWO_SUM:
+    MOVF POSTDEC0, W
+    SUBWF 0x22, W, 1
+    MOVWF POSTDEC1
+    DECFSZ 0x430
+	GOTO TWO_SUM
+    LFSR 1, 0x410
+    MOVLW 0x07
+    MOVWF 0x31, 1
+LOOP1:
+    LFSR 0, 0x400
+    MOVLW 0x07
+    MOVWF 0x30, 1
+LOOP2:
+    MOVF POSTINC0, W
+    CPFSEQ INDF1
+	GOTO CON
+    MOVWF 0x20, 1
+    MOVLW 0x10
+    NEGF WREG
+    MOVF PLUSW1, W
+    MOVWF 0x21, 1
+    RETURN
+CON:
+    DECFSZ 0x430
+	GOTO LOOP2
+    MOVF POSTINC1, F
+    DECFSZ 0x431
+	GOTO LOOP1
+Initial:
+    LIST_INT 0x64, 0x59, 0x62, 0x50, 0x47, 0x36, 0x24
+    MOVLB 0x04
+    MOVLW 0xB2
+    MOVWF 0x22, 1
+    MOVF POSTDEC0, F
+    LFSR 1, 0x416
+    MOVLW 0x07
+    MOVWF 0x30, 1
+    RCALL TWO_SUM
+end
+
